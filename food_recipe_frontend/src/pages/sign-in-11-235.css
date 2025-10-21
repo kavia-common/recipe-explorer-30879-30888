@@ -1,0 +1,327 @@
+:root {
+  /* Ocean Professional theme tokens (only used where not conflicting with provided colors) */
+  --ocean-primary: #2563EB;
+  --ocean-secondary: #F59E0B;
+  --ocean-error: #EF4444;
+  --ocean-background: #f9fafb;
+  --ocean-surface: #ffffff;
+  --ocean-text: #111827;
+
+  /* Derived tokens and defaults */
+  --screen-bg: #ffffff; /* from background color_ref color_ffffff */
+  --text-primary: #111827;
+  --muted: rgba(17, 24, 39, 0.6);
+  --line-color: rgba(17, 24, 39, 0.15);
+  --input-border: rgba(17, 24, 39, 0.1);
+  --input-bg: #ffffff;
+  --shadow-soft: 0 1px 2px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.05);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--ocean-background);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+/* Screen wrapper centers the 375x812 frame */
+.screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.artboard {
+  position: relative;
+  width: 375px;
+  height: 812px;
+  background: var(--screen-bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  border-radius: 0; /* iPhone frame appears flat in provided JSON */
+}
+
+/* Absolute positioning translated from JSON coordinates by offsetting root frame x=426,y=-430 to (0,0) inside artboard.
+   In effect, we subtract (426, -430) from all child coordinates: left = x - 426; top = y + 430. */
+
+/* Status Bar (x:426, y:-430, w:375, h:44) -> top:0, left:0 */
+.status-bar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 375px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+.status-time {
+  position: absolute;
+  /* Time frame: (x:426,y:-418,w:180,h:22); text at (x:455.5,y:-416) -> left:29.5, top:14 */
+  left: 29.5px;
+  top: 14px;
+  width: 37px;
+  height: 18px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  color: var(--text-primary);
+}
+.status-icons {
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  display: flex;
+  gap: 2px;
+}
+.status-icons .icon {
+  height: 12px;
+  width: auto;
+}
+
+/* Title group "Hello," (x:456,-336, w84,h45) and "Welcome Back!" (x:456,-291,w155,h30)
+   Converted positions: left=30px, top=94px; and left=30px, top=139px */
+.title-group {
+  position: absolute;
+  left: 30px;
+  top: 94px;
+  margin: 0;
+  display: inline-flex;
+  flex-direction: column;
+}
+.title-hello {
+  font-size: 36px; /* close to 45h text box; typo_60 assumed large */
+  line-height: 45px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.title-welcome {
+  margin-top: 0px; /* they are stacked with exact y positions; overall block positioned absolutely */
+  font-size: 20px; /* height 30 suggests line-height ~30 and font-size 20-22 */
+  line-height: 30px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Email field: group (x:456,-204,w315,h81) -> left:30px, top:226px */
+.field-group {
+  position: absolute;
+  width: 315px;
+  height: 81px;
+}
+.field-email { left: 30px; top: 226px; }
+.field-password { left: 30px; top: 337px; } /* (x:456,-93) -> top:337 */
+
+.field-label {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 21px;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.field-email .field-label { width: 38px; }
+.field-password .field-label { width: 107px; }
+
+.field-box {
+  position: absolute;
+  left: 0px;
+  top: 26px; /* label is at y=0 with 21h; JSON shows input rect at y: -178 relative to frame y:-204 => 26px below */
+  width: 315px;
+  height: 55px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.field-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  line-height: 17px;
+  color: var(--text-primary);
+}
+.field-input::placeholder {
+  color: var(--muted);
+}
+
+/* Password toggle icon placed inside input box right edge */
+.password-toggle {
+  margin-left: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--muted);
+}
+
+/* Forgot password (x:466, y:8, w97,h17) -> left:40px, top:438px */
+.forgot-password {
+  position: absolute;
+  left: 40px;
+  top: 438px;
+  width: 97px;
+  height: 17px;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--ocean-primary); /* theme accent, assuming link-like text */
+  text-decoration: none;
+}
+
+/* Big Button (x:456,y:50,w:315,h:60) -> left:30px, top:480px */
+.big-button {
+  position: absolute;
+  left: 30px;
+  top: 480px;
+  width: 315px;
+  height: 60px;
+  border: none;
+  border-radius: 16px;
+  background: var(--ocean-primary); /* style_ref style_11 likely primary */
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+.big-button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(37,99,235,0.3); }
+.big-button:active { transform: translateY(0); opacity: 0.95; }
+.big-button__label {
+  font-weight: 700;
+  font-size: 18px; /* text box h=24 => 18px font with 24 line-height */
+  line-height: 24px;
+}
+.big-button__icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Divider: group (x:516,y:130,w:195,h:17) -> left:90px, top:560px */
+.divider-line {
+  position: absolute;
+  left: 90px;
+  top: 560px;
+  width: 195px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.divider-line::before,
+.divider-line::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: var(--line-color);
+}
+.divider-text {
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--muted);
+  margin: 0 12px;
+}
+
+/* Social buttons (use positions from JSON) Google at (x:557,y:167,44x44)-> left:131px, top:597px
+   Facebook at (x:626,y:167)-> left:200px, top:597px */
+.social-row {
+  position: absolute;
+  left: 0;
+  top: 597px;
+  width: 375px;
+  height: 44px;
+}
+.social-btn {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: none;
+  padding: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+.social-btn .social-bg {
+  position: absolute;
+  left: 0; top: 0;
+  width: 44px; height: 44px;
+}
+.social-btn.google { left: 131px; }
+.social-btn.facebook { left: 200px; }
+.social-btn .social-ico {
+  position: absolute;
+  width: 24px; height: 24px;
+  left: 10px; top: 10px; /* center within 44x44 */
+}
+.social-btn .social-bg-rect {
+  position: absolute;
+  left: 0; top: 0;
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: #fff; /* style_126 unspecified image -> neutral surface */
+  box-shadow: var(--shadow-soft);
+}
+
+/* Sign up text (x:525,y:266,w:177,h:17)-> left:99px, top:696px */
+.signup-text {
+  position: absolute;
+  left: 99px;
+  top: 696px;
+  width: 177px;
+  height: 17px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--text-primary);
+}
+.signup-text .signup-link {
+  color: var(--ocean-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Home indicator (x:426,y:348,w:375,h:34)-> left:0, top:778 */
+.home-indicator {
+  position: absolute;
+  left: 0px;
+  top: 778px;
+  width: 375px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+}
+.home-indicator__line {
+  width: 135px; /* w from line rect */
+  height: 5px;
+  border-radius: 2.5px;
+  background: rgba(0,0,0,0.2); /* style_32 approximation */
+}
+
+/* Accessibility focus styles */
+a:focus, button:focus, input:focus {
+  outline: 2px solid var(--ocean-secondary);
+  outline-offset: 2px;
+}
+
+/* Responsive note: center artboard if viewport is larger; on smaller screens allow scroll */
+@media (max-width: 375px) {
+  .screen { place-items: start; }
+  .artboard { width: 100vw; height: 812px; }
+}
